@@ -75,6 +75,7 @@ $vacationEnd = $_POST['vacationEnd'];
             <li><a href="punchout.php">Punch Out</a></li>
             <li><a href="vacation.php">Vacation</a></li>
             <li><a href="sickday.php">Callout</a></li>
+            <li><a href="viewAttendence.php">Attendence</a></li>
             <li><a href="logout.php">logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->

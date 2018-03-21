@@ -1,20 +1,24 @@
 <?php
 session_start();
   
-if(!isset($_SESSION['username']) or !isset($_SESSION['password']) or $_SESSION['is_admin'] == true){
-   header("location: punchin.php");
-}
-
-$user_id = $_GET['user_id'];
+//if(!isset($_SESSION['username']) or !isset($_SESSION['password']) or $_SESSION['is_admin'] == true){
+   //header("location: punchin.php");
+//}
+ include 'admin/db.php';
+//$user_id = $_GET['user_id'];
 $vacationStart = $_POST['vacationStart'];
 $vacationEnd = $_POST['vacationEnd'];
 $dayDate = $_POST['dayDate'];
 $officeManager = $_POST['officeManager'];
 
+ $username = $_SESSION['username'];
+ $query = mysqli_query($con,"SELECT * FROM users WHERE username ='$username'") or die('error in get user id query');
+ $row = mysqli_fetch_assoc($query);
+ $user_id = $row['user_id'];
+
 
 //$currentMonth = date("Y/m/d");
 
- include 'admin/db.php';
 
 
  ?>
@@ -69,6 +73,7 @@ $officeManager = $_POST['officeManager'];
             <li><a href="punchout.php">Punch Out</a></li>
             <li><a href="vacation.php">Vacation</a></li>
             <li><a href="sickday.php">Callout</a></li>
+            <li><a href="viewAttendence.php">Attendence</a></li>
             <li><a href="logout.php">logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -77,7 +82,7 @@ $officeManager = $_POST['officeManager'];
     <div class="container">
       <div class="row">
                   <div class="col-md-12">
-       
+      <!-- 
                               <div class="col-md-3 col-xs-11">
                               <form method="GET" action="">
                                 <br><br><br>
@@ -86,8 +91,12 @@ $officeManager = $_POST['officeManager'];
                               <input type="number" name="user_id" value="">                               
                               <input type="submit" name="submit">
                               </form>
-                            
-                
+      -->                      
+          <br><br><br><br><br><br><br><br>
+                 <?php echo "<h4>Employee ID: </h4>" . $user_id . "<br>" ?>
+                 
+                 <?php echo "Showing results for: " . $_SESSION['username'] . "<br>" ?>
+                 <br><br><br>
               </div>
            </div>
         </div>
@@ -112,7 +121,7 @@ $result= $conn->query($sql);
 
 if($result->num_rows > 0 ){
   while ($row = $result->fetch_assoc()) {
-    echo "Submited on: " . $row["dayDate"]. "<br>" .
+    echo "<h3>Vacation Information</h3>"."Submited on: " . $row["dayDate"]. "<br>" .
     "Vacation Started ". $row["vacationStart"]. "<br>".
     "Vacation Ended " . $row["vacationEnd"]. "<br>".
     "Office Manager " . $row["officeManager"].
@@ -121,6 +130,36 @@ if($result->num_rows > 0 ){
 }else{
  
 }
+
+
+$sql2 = "SELECT  dayDate, officeManager, signInTime, SignOutTime FROM punchclock WHERE user_id = '$user_id' ";
+$result2= $conn->query($sql2);
+
+if($result2->num_rows > 0 ){
+  while ($row = $result2->fetch_assoc()) {
+    echo "<h3>Punchclock Activity</h3>"."Date: " . $row["dayDate"]. "<br>" .
+    "Shift Started ". $row["signInTime"]. "<br>".
+    "Shift Ended " . $row["SignOutTime"]. "<br>".
+    "Office Manager " . $row["officeManager"].
+     " <br>" . "<br>";
+  }
+}else{
+ 
+}
+
+$sql3 = "SELECT sickDay FROM sickdays WHERE user_id = '$user_id' ";
+$result3= $conn->query($sql3);
+
+if($result3->num_rows > 0 ){
+  while ($row = $result3->fetch_assoc()) {
+    echo "<h3>Sickdays</h3>"."Date: " . $row["sickDay"]. "<br>" .
+   "<br>";
+  }
+}else{
+ 
+}
+
+
 
 $con->close();
 
