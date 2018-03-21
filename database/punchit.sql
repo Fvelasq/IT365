@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.2.11
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Mar 23, 2016 at 08:28 PM
--- Server version: 5.6.21
--- PHP Version: 5.6.3
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -34,7 +25,21 @@ CREATE TABLE IF NOT EXISTS `attendence` (
   `SignOutTime` time NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
---
+ CREATE TABLE IF NOT EXISTS punchclock (id int(11), dayDate date, officeManager varchar(50), user_id int(10), signInTime time, SignOutTime time);
+
+CREATE TABLE IF NOT EXISTS sickdays (id int(11), dayDate date, officeManager varchar(50), user_id int(10));
+
+CREATE TABLE IF NOT EXISTS vacation (id int(11), dayDate date, vacationStart date, vacationEnd date, user_id int(10));
+ALTER TABLE vacation ADD COLUMN officeManager varchar(50);
+ALTER TABLE vacation ADD PRIMARY KEY id;
+
+ALTER TABLE sickdays ADD COLUMN sickDay date;
+ALTER TABLE sickdays ADD PRIMARY KEY id;
+ALTER TABLE sickdays MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+ALTER TABLE punchclock MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+ALTER TABLE punchclock ADD PRIMARY KEY (`id`);  
+
 -- Dumping data for table `attendence`
 --
 
@@ -83,10 +88,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `is_admin`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1),
-(2, 'ahmed', '25f9e794323b453885f5181f1b624d0b', 0),
-(3, 'maher', '25f9e794323b453885f5181f1b624d0b', 0),
-(4, 'osama', '25f9e794323b453885f5181f1b624d0b', 0),
-(5, 'yasser', '25f9e794323b453885f5181f1b624d0b', 0);
+(2, 'jose', '25f9e794323b453885f5181f1b624d0b', 0);
 
 --
 -- Indexes for dumped tables
